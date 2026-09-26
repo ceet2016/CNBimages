@@ -17,7 +17,7 @@ main:
       stages:
         - name: 构建并推送镜像
           script:
-            - docker login ${CNB_DOCKER_REGISTRY} -u $CNB_ACCESS_KEY_ID -p $CNB_ACCESS_TOKEN
+            - echo "$CNB_ACCESS_TOKEN" | docker login ${CNB_DOCKER_REGISTRY} -u $CNB_ACCESS_KEY_ID --password-stdin
             - docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest .
             - docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest
         - name: 完成提示
