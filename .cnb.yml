@@ -1,0 +1,25 @@
+# CNB 云原生构建配置（.cnb.yml）
+#
+# 说明：
+#   - 本文件定义「推送到 main 分支时」触发的构建流水线；
+#   - 流水线使用仓库根目录的 Dockerfile 构建镜像，并推送到 CNB 自带镜像仓库；
+#   - 镜像推送到仓库后，在 CNB 控制台「云原生应用」中基于该镜像创建服务，
+#     并在部署配置里注入下方「部署环境变量」，CNB 会分配一个可访问的域名。
+#
+# 可用内置变量（节选）：
+#   ${CNB_DOCKER_REGISTRY}         CNB 镜像仓库地址
+#   ${CNB_REPO_SLUG_LOWERCASE}     仓库 slug（小写）
+
+main:
+  push:
+    - docker:
+        image: docker:24
+      stages:
+        - name: 构建并推送镜像
+          script:
+            - docker login ${CNB_DOCKER_REGISTRY} -u $CNB_ACCESS_KEY_ID -p $CNB_ACCESS_TOKEN
+            - docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest .
+            - docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest
+        - name: 完成提示
+          script:
+            - echo "镜像已推送，请在 CNB 控制台『云原生应用』使用该镜像部署，并配置环境变量。"

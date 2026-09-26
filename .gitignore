@@ -1,0 +1,15 @@
+# 环境与私密
+.env
+*.log
+
+# 运行时上传目录
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# 依赖与缓存
+/vendor/
+composer.lock
+
+# 系统文件
+.DS_Store
+Thumbs.db

@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      - APP_ENV=development
+      - APP_DEBUG=true
+      - APP_SECURE_COOKIE=false
+      - ALLOW_REGISTER=true
+      - PUBLIC_BASE_URL=http://localhost:8080
+      - DB_FILE=/var/www/data/app.db
+      - SESSION_SAVE_PATH=/var/www/data/sessions
+      - LOCAL_STORAGE_DIR=/var/www/uploads
+      - CACHE_DIR=/var/www/cache
+    volumes:
+      - ./src:/var/www/src
+      - ./public:/var/www/public
+      - ./data:/var/www/data
+      - ./uploads:/var/www/uploads
+      - ./cache:/var/www/cache
